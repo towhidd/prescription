@@ -1,0 +1,85 @@
+<?php 
+
+	//phpinfo();
+$a = array("Bangladesh","India","Pakistan");
+echo "<pre>";
+print_r($a);
+echo "</pre>";
+
+function myfunction($temp,$swap){
+	$a = array("Bangladesh","India","Pakistan");
+	$temp = $a[0];
+	$a[0] = $a[1];
+	$a[1] = $temp;
+	//echo "My Function";
+	//$myname = $a[0];
+	return $a[0];
+
+	//print_r($a);
+	//return $myname;
+
+}
+echo myfunction("India","Pakistan");
+?>
+
+<html>
+<title>
+	My Test
+</title>
+<body>
+	
+	<form method="POST">
+	   <!-- <input type="text" name="ItemName[1][2]" value="a">
+	   <input type="text" name="ItemName[1][3]" value="b">
+	   <input type="text" name="ItemName[1][4]" value="c"> -->
+
+	    <input type="text" name="array[]" value="a" /> <br /><br />
+		<input type="text" name="array[]" value="b" /> <br /><br />
+		<input type="text" name="array[]" value="c" /> <br /><br />
+		<input type="text" name="array[]" value="d" /> <br /><br />
+	   <input type="submit">
+    </form>
+
+<?php
+include ('connect.php');
+
+foreach ($_POST['array'] as $post_id => $value) {
+	//echo "Name: $item .Value: $value <br />";
+
+	$position = mysql_query("SELECT post_id, value FROM test ORDER BY post_id DESC limit 0,0") or die(mysql_error());;
+	$my_pos = mysql_fetch_assoc($position);
+	$query  = "INSERT INTO  test (post_id,value) VALUES ( '$my_pos'+1, '$value' )";
+	mysql_query( $query)or die(mysql_error());
+}
+//$my_var = mysql_query("SELECT * from test limit 0, 1") or die(mysql_error());
+
+//echo $my_var;
+$shots = mysql_query("SELECT post_id, value FROM test ORDER BY post_id DESC limit 0,4") or die(mysql_error());
+
+while($row=mysql_fetch_assoc($shots))
+{
+  //$id = $row;
+	echo "Post ID:" . $row['post_id'] . "<br>";
+	echo "Value:" . $row['value'] . "<br>";
+}
+echo '$id[0]';
+
+print_r( $_POST['array'] );
+
+echo "<br />";
+
+$myarray = $_POST['array'];
+echo "$myarray[1]";
+
+
+
+if($_POST) {
+        echo "<pre>";
+        print_r($_POST);
+        echo "</pre>";
+}
+
+var_dump($_POST);
+?>
+</body>
+</html>
